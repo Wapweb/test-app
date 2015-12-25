@@ -27,7 +27,7 @@ class Transaction extends Model {
     private $_recipientId;
 
     /**
-     * @var  int $_creationTime
+     * @var  string $_creationTime
      */
     private $_creationTime;
 
@@ -108,11 +108,13 @@ class Transaction extends Model {
         $this->_senderId = $senderId;
     }
 
-
-
-    public function beforeValidationOnCreate()
+    public function initialize()
     {
-        $this->setCreationTime(date('Y-m-d H:i:s', time()));
+        $this->skipAttributes(
+            [
+                '_creationTime',
+            ]
+        );
     }
 
     public function getSource()
@@ -129,6 +131,28 @@ class Transaction extends Model {
             'transaction_datetime' => '_creationTime',
             'transaction_amount' => '_amount'
         ];
+    }
+
+    /**
+     * Allows to query a set of records that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return User[]
+     */
+    public static function find($parameters = null)
+    {
+        return parent::find($parameters);
+    }
+
+    /**
+     * Allows to query the first record that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return User
+     */
+    public static function findFirst($parameters = null)
+    {
+        return parent::findFirst($parameters);
     }
 
 

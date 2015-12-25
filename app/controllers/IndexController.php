@@ -40,30 +40,17 @@ class IndexController extends ControllerBase
 
             $sender = User::findFirst($this->request->getPost("senderId", "int", 0));
             $recipient = User::findFirst($this->request->getPost("recipientId", "int", 0));
+
             $amount = $this->request->getPost("amount", "float", 0);
+            $transaction = new Transaction();
 
-            $sendMoney = new SendMoneyBetweenUsers($sender, $recipient, $amount);
-
-            $result = $sendMoney->process();
+            $result = $sender->sendMoney($amount, $recipient, $transaction);
 
             if($result === false)
-            {
-                foreach ($sendMoney->getErrors() as $error)
+                foreach ($sender->getErrors() as $error)
                     $this->flashSession->error($error);
-            }
             else
-            {
-                $transaction = new Transaction();
-                $transaction->setAmount($amount);
-                $transaction->setRecipientId($recipient->getId());
-                $transaction->setSenderId($sender->getId());
-
-                if($transaction->save() === false)
-                    foreach ($transaction->getMessages() as $message)
-                        $this->flashSession->error($message->getMessage());
-                else
-                    $this->flashSession->success("transaction processed successfully");
-            }
+                $this->flashSession->success("transaction processed successfully");
 
         }
 
