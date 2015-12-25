@@ -1,0 +1,65 @@
+<p><?php $this->flashSession->output() ?></p>
+
+<form method="post" action="/index/add">
+    <div>
+        <label for="_firstName">First Name</label>
+        <input type="text" name="_firstName" id="_firstName" value="first name" required>
+    </div>
+    <div>
+        <label for="_lastName">Last Name</label>
+        <input type="text" name="_lastName" id="_lastName" value="last name" required>
+    </div>
+    <div>
+        <label for="_email">Email</label>
+        <input type="email" name="_email" id="_email" value="test@gmail.com" required>
+    </div>
+    <div>
+        <label for="_cardHoldNumber">Card Hold Number</label>
+        <input type="text" name="_cardHoldNumber" id="_cardHoldNumber" value="1234556" required>
+    </div>
+    <div>
+        <label for="_cardNumber">Card Number</label>
+        <input type="text" min="16" max="16" name="_cardNumber" id="_cardNumber" value="1234123412341234" required>
+    </div>
+    <div>
+        <label for="_cardCv2">Card cv2</label>
+        <input type="text" name="_cardCv2" id="_cardCv2" value="123" required>
+    </div>
+    <div>
+        <label for="_cardExpirationDate">Card Expiration</label>
+        <input type="date" name="_cardExpirationDate" id="_cardExpirationDate" value="2017-12-21" required>
+    </div>
+    <div>
+        <label for="_cardAmount">Card amount</label>
+        <input type="text" name="_cardAmount" id="_cardAmount" value="1244.23" required>
+    </div>
+    <div>
+        <button type="submit">Save</button>
+    </div>
+</form>
+
+<form method="post" action="/index/send" style="padding-top: 20px">
+    <div>
+        <label for="sender">From</label>
+        <select name="senderId" id="sender">
+            <?php foreach($users as $user):?>
+                <option value="<?=$user->getId()?>"><?=$user->getFullName()?> (Amount: <?=$user->getCardAmount()?>)</option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div>
+        <label for="recipient">To</label>
+        <select name="recipientId" id="recipient">
+            <?php foreach($users as $user):?>
+                <option value="<?=$user->getId()?>"><?=$user->getFullName()?> (Amount: <?=$user->getCardAmount()?>)</option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div>
+        <label for="_amount">Amount</label>
+        <input type="text" name="amount" id="_amount" value="" required>
+    </div>
+    <div>
+        <button type="submit">Send money</button>
+    </div>
+</form>
